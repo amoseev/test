@@ -4,8 +4,8 @@ $(document).ready(function () {
 
         $( document ).on( "click", "button", function(event) {
         
-            event.preventDefault();
-            alert(1);
+           // event.preventDefault();
+           // alert(1);
         });
                 
     });

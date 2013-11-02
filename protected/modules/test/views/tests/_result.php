@@ -1,1 +1,0 @@
-<?php echo $description ; exit();//$form->textAreaRow(,array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>

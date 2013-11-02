@@ -62,7 +62,7 @@ class Questions extends CActiveRecord
 		return array(
 			'answers' => array(self::HAS_MANY, 'Answers', 'fk_question'),
 		//	'details' => array(self::HAS_MANY, 'Details', 'fk_question'),
-			'fkTest' => array(self::BELONGS_TO, 'Tests', 'fk_test'),
+			'test' => array(self::BELONGS_TO, 'Tests', 'fk_test'),
 		);
 	}
 

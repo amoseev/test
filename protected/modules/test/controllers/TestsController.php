@@ -29,7 +29,7 @@ class TestsController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','createPassing','viewResult',/*DELETE*/'create','deleteKey'),
+				'actions'=>array('index','view','createPassing','viewResult','resultPassing',/*DELETE*/'create','deleteKey'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -310,24 +310,22 @@ class TestsController extends Controller
 			$model->attributes=$_POST['Passings'];
             $model->fk_test=$id;
             $model->fk_user=Yii::app()->user->id;//если пользователь не войдет - будет ошибка
-         	
-            if($model->save()){
 
-                //  $passing_m = Keys::model()->findByPk(1);
-                $result_sum=$model->result_sum;
-                  $criteria = new CDbCriteria(array(
-                    'condition'=> "fk_test=$id AND bottom_val<$result_sum  AND top_val>=$result_sum",
-                  ));
-                  $el = Keys::model()->findAll($criteria);
-                  $description=$el[0]->description;
-                	$this->render('_result',array(
-            		'description'=>$description));
+            if($model->save()){
+                $this->redirect(array('resultPassing','id'=>$model->id));
             }
-				
 		}
-        
+
 	   $this->render('createPassing',array('model'=>$model,));
 	}
+
+    public function actionResultPassing($id)
+    {
+        $model = Passings::model()->with('test.keys')->findByPk($id);
+        $this->render('resultPassing',array('model'=>$model,));
+    }
+
+
     
     public function actionDeleteKey($keyID)
 	{

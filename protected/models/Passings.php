@@ -54,7 +54,7 @@ class Passings extends CActiveRecord
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, fk_user, fk_test, result_sum, date', 'safe', 'on'=>'search'),
-            array('details', 'ValidatorFullAnswers','fullTest'=>'fullTest'),
+            array('details', 'test.validators.ValidatorFullAnswers'),
 		);
 	}
 
@@ -67,8 +67,8 @@ class Passings extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'details' => array(self::HAS_MANY, 'Details', 'fk_passings'),
-			'fkUser' => array(self::BELONGS_TO, 'Users', 'fk_user'),
-			'fkTest' => array(self::BELONGS_TO, 'Tests', 'fk_test'),
+			//'user' => array(self::BELONGS_TO, 'Users', 'fk_user'), //Yii:app()->user
+			'test' => array(self::BELONGS_TO, 'Tests', 'fk_test'),
 		);
 	}
 

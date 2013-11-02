@@ -35,7 +35,7 @@ class MyMenuLabels
         const MENU_TEST_DELETE_TESTS = 'Удалить тест' ;
         const MENU_TEST_MANAGE_TESTS = 'Управление тестами' ;
         const MENU_TEST_CREATE_PASSING = 'Пройти тест';
-       
+        const MENU_TEST_LIST_PASSINGS = 'Список пройденных тестов';
         
         
         

@@ -83,7 +83,7 @@ class Tests extends CActiveRecord
 			'passings' => array(self::HAS_MANY, 'Passings', 'fk_test'),
 			'questions' => array(self::HAS_MANY, 'Questions', 'fk_test'),
 			'keys' => array(self::HAS_MANY, 'Keys', 'fk_test'),
-            'answersQ' => array(self::HAS_MANY, 'Answers', 'questions_fk'),
+            //'answersQ' => array(self::HAS_MANY, 'Answers', 'questions_fk'),
 		);
 	}
 
