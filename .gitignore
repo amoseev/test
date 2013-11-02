@@ -1,3 +1,10 @@
+#runtime files
+assets/*
+!.gitkeep
+#htdocs/admins/protected/runtime/*
+#!htdocs/admins/protected/runtime/.gitkeep
+
+
 #################
 ## Eclipse
 #################
