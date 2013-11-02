@@ -7,6 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
+<<<<<<< HEAD:protected/modules/test/validators/ValidatorKeys.php
 class ValidatorKeysOnCreate extends CValidator {
 
     protected function validateAttribute($object,$attribute)
@@ -14,6 +15,15 @@ class ValidatorKeysOnCreate extends CValidator {
         if($object->scenario=='createTest')$listKeys=$object->listKeys;
         if($object->scenario=='updateTest')$listKeys=$object->listUpdateKeys;
 
+=======
+class ValidatorKeys extends CValidator {
+
+    protected function validateAttribute($object,$attribute)
+    {
+       // if($object->scenario=='createTest')$listKeys=$object->listKeys;
+       // if($object->scenario=='updateTest')$listKeys=$object->listUpdateKeys;
+        $listKeys=$object[$attribute];
+>>>>>>> 30d078f57814bbd04dac93a7c353522de6580620:protected/modules/test/validators/ValidatorKeys.php
 
         if($this->isEmpty($listKeys)){
             $this->addError($object,$attribute,'Необходимо заполнить Ключи к тесту');

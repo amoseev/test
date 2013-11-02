@@ -61,10 +61,13 @@ class Tests extends CActiveRecord
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, title, description, category, statuse', 'safe', 'on'=>'search'),
-            array('listUpdateKeys,listUpdateQuestions', 'required','on'=>'updateTest', ),
+           // array('listUpdateKeys,listUpdateQuestions', 'required','on'=>'updateTest', ),
             //array('listKeys,listQuestions', 'required','on'=>'createTest', ), //включены в валидаторы отдельно
-            array('listQuestions', 'test.validators.ValidatorQuestionsAndAnswersOnCreate','on'=>'createTest', ),
-            array('listKeys', 'test.validators.ValidatorKeysOnCreate','on'=>'createTest', ),
+            array('listQuestions', 'test.validators.ValidatorQuestionsAndAnswers','on'=>'createTest', ),
+            array('listKeys', 'test.validators.ValidatorKeys','on'=>'createTest', ),
+            array('listUpdateKeys', 'test.validators.ValidatorKeys','on'=>'updateTest', ),
+            array('listUpdateQuestions', 'test.validators.ValidatorQuestionsAndAnswers','on'=>'updateTest', ),
+
 		);
 	}
 
@@ -156,22 +159,30 @@ class Tests extends CActiveRecord
             }
         }
 
+
+
         // Update Test
+        //echo update questions
 
         $countNewQ = count ( $this->listUpdateQuestions );
         $countLastQ = count( $this->listQuestions ) ;
 
         if( $this->scenario=='updateTest'  ) {
-          //  echo 'update questions';
                 if( $countLastQ == $countNewQ ){
                 	for ($i = 0; $i < $countLastQ; $i++) {
                 		$this->listQuestions[$i]->statement = $this->listUpdateQuestions[$i]['statement'] ;
                 		$this->listQuestions[$i]->mapUpdateAnswers = $this->listUpdateQuestions[$i]['answers'] ;
-                		$this->listQuestions[$i]->save();
+                        $this->listQuestions[$i]->scenario=$this->scenario;
+                        $this->listQuestions[$i]->save();
+
+                        //$this->listQuestions[$i]->save(false);
+                		//отключил валидацию при сохранении, т.к. уже была валидация в специальном валидаторе,
+                        //а это решит проблему сохранения правильной модели вместо  не валидной модели . На бою можно опять сделать валидацию.
+                        //TODO если у вопроса нету ответов, то будет ошибка. - исправил отключив повторную валидацию.
                     }
                 }
+
                 if( $countNewQ > $countLastQ ){
-                   //  echo '$countNewQ > $countLastQ ';exit();
                     for ($i = 0; $i < $countLastQ; $i++) {
                 		$this->listQuestions[$i]->statement = $this->listUpdateQuestions[$i]['statement'] ;
                 		$this->listQuestions[$i]->mapUpdateAnswers = $this->listUpdateQuestions[$i]['answers'] ;
@@ -181,14 +192,12 @@ class Tests extends CActiveRecord
                         $question=new Questions();
                         $question->fk_test = $this->id;
                         $question->statement=$this->listUpdateQuestions[$i]['statement'];
-                        $question->mapAnswers=$this->listUpdateQuestions[$i]['answers'];
+                        $question->answers=$this->listUpdateQuestions[$i]['answers'];
                         $question->save();
-                	} 	  
-                
-                
+                	}
                 }
+
                 if( $countNewQ < $countLastQ ){
-                   // echo '$countNewQ < $countLastQ'; exit();
                 	for ($i = 0; $i < $countNewQ; $i++) {
                 		$this->listQuestions[$i]->statement = $this->listUpdateQuestions[$i]['statement'] ;
                 		$this->listQuestions[$i]->mapUpdateAnswers = $this->listUpdateQuestions[$i]['answers'] ;
@@ -200,11 +209,11 @@ class Tests extends CActiveRecord
                 }  
         }
 
-       
+        //update keys
         $countNew = count ( $this->listUpdateKeys );
         $countLast = count( $this->listKeys ) ;
         if( $this->scenario=='updateTest'  ) {
-            //update keys
+
                 if( $countLast == $countNew ){
                 	for ($i = 0; $i < $countLast; $i++) {
                 		$this->listKeys[$i]['bottom_val'] = $this->listUpdateKeys[$i]['bottom_val'] ;
