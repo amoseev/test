@@ -16,7 +16,6 @@
 class Questions extends CActiveRecord
 {
     public $title;
-    public $mapAnswers = array();
     public $mapUpdateAnswers = array();
 	/**
 	 * Returns the static model of the specified AR class.
@@ -104,11 +103,14 @@ class Questions extends CActiveRecord
 	{  
         $res=CHtml::listData($this->answers,'id', 'response');
         return $res;
-	}   
-    
-     
+	}
+
+
     protected function afterSave()
     {
+       // echo 'into save question';
+      //  exit;
+
         parent::afterSave();
 
         $countNewA = count ( $this->mapUpdateAnswers );
@@ -124,7 +126,7 @@ class Questions extends CActiveRecord
         }
 
 
-        if( $this->scenario=='update') {
+        if( $this->scenario=='updateTest') {
                 if( $countLastA == $countNewA ){
                 	for ($i = 0; $i < $countLastA; $i++) {
                 		$this->answers[$i]->response = $this->mapUpdateAnswers[$i]['response'] ;
@@ -144,9 +146,7 @@ class Questions extends CActiveRecord
                         $answer->response=$this->mapUpdateAnswers[$i]['response'];
                         $answer->score=$this->mapUpdateAnswers[$i]['score'];
                         $answer->save();
-                	} 	  
-                
-                
+                	}
                 }
                 if( $countNewA < $countLastA ){
                 	for ($i = 0; $i < $countNewA; $i++) {

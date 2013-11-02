@@ -118,13 +118,21 @@ class TestsController extends Controller
                                 $arrAnswersForQuestion[] = $answer;
                             }
                         }
+                        $question->answers = $arrAnswersForQuestion;
                     }
-                    $question->answers = $arrAnswersForQuestion;
                     $arrQuestions[] = $question;
                 }
             }else{
                 //throw new CHttpException(400,'Invalid request. Empty list of questions');
             }
+
+            /*foreach($arrQuestions as $qn=>$question){
+                echo "question:$qn  :".$question->statement."</br>";
+                echo "count answers:".count($question->answers)."</br>";
+                if(isset($question->answers))foreach($question->answers as $answer) echo "answer:".($answer->response)."   ".($answer->score)."</br>";
+            };//*/
+
+
             return $arrQuestions;
     }     
      
@@ -173,7 +181,6 @@ class TestsController extends Controller
 		$model->listKeys = $model->keys; //$this->loadKeys($id);
         $model->listQuestions = $model->questions;
 
-        // exit;
 		$model -> setScenario('updateTest');
         
 		// Uncomment the following line if AJAX validation is needed
@@ -184,10 +191,10 @@ class TestsController extends Controller
 
             $model->attributes=$_POST['Tests'];
   
-            foreach($model->questions as $q_number=>$question ){
+            /*foreach($model->questions as $q_number=>$question ){
                 $model->listQuestions[$q_number] =$question;
                 $model->listQuestions[$q_number]->mapAnswers = $question->answers;
-            }
+            }//*/
 
             $model->listUpdateQuestions = $this->getPostQuestions();
                               
