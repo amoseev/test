@@ -1,5 +1,5 @@
 <?php
-	 class ValidatorFullAnswers extends CRequiredValidator{
+	 class ValidatorFullAnswers extends CValidator{
         
         //public $details = null;
         protected $fullTest = null;
