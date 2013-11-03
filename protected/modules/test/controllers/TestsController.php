@@ -29,7 +29,7 @@ class TestsController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','createPassing','viewResult','resultPassing',/*DELETE*/'create','deleteKey'),
+				'actions'=>array('index','view','createPassing','viewResult','resultPassing','resultAllPassing',/*DELETE*/'create','deleteKey'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -326,6 +326,14 @@ class TestsController extends Controller
     }
 
 
+    public function actionResultAllPassing()
+    {
+        $userID = Yii::app()->user->id;
+        $criteria = new CDbCriteria;
+        $criteria->condition = 'fk_user='.$userID.'';
+        $model = Passings::model()->with('test.keys')->findAll($criteria);
+        $this->render('resultAllPassing',array('model'=>$model,));
+    }
     
     public function actionDeleteKey($keyID)
 	{

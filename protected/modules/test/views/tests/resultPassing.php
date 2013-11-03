@@ -13,7 +13,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
     array('label'=>MyMenuLabels::MENU_TEST_LIST_TESTS,'url'=>Yii::app()->createUrl('test/tests/index')),
-    array('label'=>MyMenuLabels::MENU_TEST_LIST_PASSINGS,'url'=>Yii::app()->createUrl('test/tests/resultPassing'), 'visible'=>Yii::app()->user->checkAccess('admin')),
+    array('label'=>MyMenuLabels::MENU_TEST_LIST_PASSINGS,'url'=>Yii::app()->createUrl('test/tests/resultAllPassing'), 'visible'=>Yii::app()->user->checkAccess('admin')),
 );
 ?>
 
