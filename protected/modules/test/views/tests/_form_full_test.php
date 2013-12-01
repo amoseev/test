@@ -22,8 +22,10 @@
 	<?php echo $form->dropDownListRow($model,'statuse',array('1'=>'enable','0'=>'disable'),array('class'=>'span5')); ?>
 
 <hr />
+<? $countQuestions = count($model->listQuestions); ?>
+
 <h5>Вопросы к тесту:</h5>
-<div id="qa-field" max_number_question="<?php echo count($model->questions) ?>">
+<div id="qa-field" max_number_question="<?php echo $countQuestions ?>">
       <?php foreach($model->listQuestions as $numberQ=>$question){
                 echo $this->renderPartial('_form_question', array('question'=>$question,'numberQ'=>$numberQ,'form'=>$form));
             }
@@ -32,7 +34,7 @@
 
 <br />
 	   <hr />
-        <? $countQuestions = count($model->listQuestions); ?>
+
         <div class="form-actions">
         <strong>Шаблон вопроса:</strong>
         <div id="template-qa-field">
