@@ -30,7 +30,7 @@ class TestsController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view','createPassing','viewResult','resultPassing','resultAllPassing',/*DELETE*/'create','deleteKey'),
-				'users'=>array('*'),
+				'roles'=>array('guest'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('create','update'),
@@ -180,7 +180,6 @@ class TestsController extends Controller
 	    $model = $this->loadFullTest($id);
 		$model->listKeys = $model->keys; //$this->loadKeys($id);
         $model->listQuestions = $model->questions;
-
 		$model -> setScenario('updateTest');
         
 		// Uncomment the following line if AJAX validation is needed
@@ -370,9 +369,9 @@ class TestsController extends Controller
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
-    
+
     public function createScoreMap($fullTest)
-	{ 
+	{
         $scoreMap=array();
         foreach($fullTest->questions as $question)
             {
@@ -381,6 +380,6 @@ class TestsController extends Controller
                          $scoreMap[$answer->id]=$answer->score;
                     }
             }
-        return $scoreMap;    
-	}    
+        return $scoreMap;
+	}
 }
