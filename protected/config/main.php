@@ -10,7 +10,7 @@ return array(
 	'name'=>false,
     'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+		'adminEmail'=>'mos_artem2@mail.ru',
 	),
     'language'=>'ru',
 	// preloading 'log' component
@@ -100,7 +100,7 @@ return array(
 				),
 				// uncomment the following to show log messages on web pages
 				//DELETE
-			/*	array(
+				array(
 					'class'=>'CWebLogRoute',
 				),//*/
 				
