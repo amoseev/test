@@ -30,8 +30,9 @@ $this->menu=array(
         }
     }
     if($countResults==0){
-        echo "No accessbly keys";
-    }//echo $this->renderPartial('_form_result_passing.php', array('model'=>$model,)); ?>
+            echo "No accessbly keys";
+    }
+?>
 
 
 
