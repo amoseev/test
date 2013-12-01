@@ -30,7 +30,7 @@ class Tests extends CActiveRecord
     
     public $listUpdateQuestions=array(); 
 
-    public $listUpdateKeys=array(); 
+    public $listUpdateKeys=array();
      
 	public static function model($className=__CLASS__)
 	{
@@ -67,6 +67,7 @@ class Tests extends CActiveRecord
             array('listKeys', 'test.validators.ValidatorKeys','on'=>'createTest', ),
             array('listUpdateKeys', 'test.validators.ValidatorKeys','on'=>'updateTest', ),
             array('listUpdateQuestions', 'test.validators.ValidatorQuestionsAndAnswers','on'=>'updateTest', ),
+            array('listUpdateQuestions', 'test.validators.ValidatorAccessebilityUpdateTest','on'=>'updateTest', ),
 
 		);
 	}
@@ -164,11 +165,17 @@ class Tests extends CActiveRecord
         // Update Test
         //echo update questions
 
+//Если на тест уже есть результаты ответов, то позвляю изменять его только поправив баллы в существующем числе вопросов - ответов
+
         $countNewQ = count ( $this->listUpdateQuestions );
         $countLastQ = count( $this->listQuestions ) ;
 
+       /// $this->addError($this,'sdf');
+
+
         if( $this->scenario=='updateTest'  ) {
                 if( $countLastQ == $countNewQ ){
+                    $isNeedRecalculateResultSum = $this->getNeedRecalculateResultSum();
                 	for ($i = 0; $i < $countLastQ; $i++) {
                 		$this->listQuestions[$i]->statement = $this->listUpdateQuestions[$i]['statement'] ;
                 		$this->listQuestions[$i]->mapUpdateAnswers = $this->listUpdateQuestions[$i]['answers'] ;
@@ -180,6 +187,8 @@ class Tests extends CActiveRecord
                         //а это решит проблему сохранения правильной модели вместо  не валидной модели . На бою можно опять сделать валидацию.
                         //TODO если у вопроса нету ответов, то будет ошибка. - исправил отключив повторную валидацию.
                     }
+                    if($isNeedRecalculateResultSum)$this->recalculateResultSum();
+
                 }
 
                 if( $countNewQ > $countLastQ ){
@@ -257,9 +266,45 @@ class Tests extends CActiveRecord
     }
         
     
+    public function getCountPassings(){
+        $id = $this->id;
+        $sql = "SELECT count(*) FROM passings WHERE fk_test = :id";
+        $res = Yii::app()->db->createCommand($sql)->bindParam(":id",$id,PDO::PARAM_INT)->queryScalar();
+        $res = empty($res) ? 0 : (int) $res;
+        return $res;
+    }
     
-    
-    
+    protected function getNeedRecalculateResultSum(){
+
+        if(count($this->listUpdateQuestions) !== count($this->listQuestions) ) throw new Exception('Different count of questions');
+
+        foreach($this->listUpdateQuestions as $i => $question ){
+            foreach($question->answers as $j => $answer){
+                if( $answer['score'] !== $this->listQuestions[$i]->answers[$j]['score'] ){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    protected function recalculateResultSum(){
+        $id = $this->id;
+        $sql = "update passings p
+                set   p.result_sum = (
+                                        select sum(a.score) from  details d
+                                        inner join answers a on (d.fk_answer = a.id)
+                                        where d.fk_passings = p.id
+                                     )
+                where
+                p.fk_test = :fk_test
+                ;";
+        $res = Yii::app()->db->createCommand($sql)->bindParam(":fk_test",$id,PDO::PARAM_INT)->execute();
+        $res = empty($res) ? 0 : (int) $res;
+        return $res;
+
+
+    }
     
     
 }
