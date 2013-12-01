@@ -21,11 +21,17 @@ $this->menu=array(
 
 <h3>Пользователь: <? echo Yii::app()->user->name ?></h3>
 <h5>Дата: <? echo $model->date ?></h5>
-<?php foreach($model->test->keys as $key){
-    if($model->result_sum > $key->bottom_val && $model->result_sum < $key->top_val)
-        echo $this->renderPartial('_form_result_passing', array('key'=>$key,'result_sum'=>$model->result_sum));
-
-} //echo $this->renderPartial('_form_result_passing.php', array('model'=>$model,)); ?>
+<?php
+    $countResults=0;
+    foreach($model->test->keys as $key){
+        if($model->result_sum > $key->bottom_val && $model->result_sum < $key->top_val){
+            $countResults=$countResults+1;
+            echo $this->renderPartial('_form_result_passing', array('key'=>$key,'result_sum'=>$model->result_sum));
+        }
+    }
+    if($countResults==0){
+        echo "No accessbly keys";
+    }//echo $this->renderPartial('_form_result_passing.php', array('model'=>$model,)); ?>
 
 
 
